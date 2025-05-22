@@ -1,0 +1,4 @@
+*/cloakvpn.log
+*/.terraform/*
+*/tfstate/*
+*/.terraform.lock.hcl
