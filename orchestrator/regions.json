@@ -5,6 +5,9 @@
     },
     "eu-central-1": {
       "count": 1
+    },
+    "ap-northeast-1": {
+      "count": 1
     }
   }
 }
