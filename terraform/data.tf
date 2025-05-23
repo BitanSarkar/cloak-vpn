@@ -8,7 +8,11 @@ data "aws_ami" "amazon_linux_us_east_1" {
   owners      = ["amazon"]
   filter {
     name = "name"
-    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+    values = ["amzn2-ami-hvm-*-arm64-gp2"]
+  }
+  filter {
+    name   = "architecture"
+    values = ["arm64"]
   }
 }
 
@@ -18,7 +22,11 @@ data "aws_ami" "amazon_linux_us_east_2" {
   owners      = ["amazon"]
   filter {
     name = "name"
-    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+    values = ["amzn2-ami-hvm-*-arm64-gp2"]
+  }
+  filter {
+    name   = "architecture"
+    values = ["arm64"]
   }
 }
 
@@ -28,7 +36,11 @@ data "aws_ami" "amazon_linux_us_west_1" {
   owners      = ["amazon"]
   filter {
     name = "name"
-    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+    values = ["amzn2-ami-hvm-*-arm64-gp2"]
+  }
+  filter {
+    name   = "architecture"
+    values = ["arm64"]
   }
 }
 
@@ -38,7 +50,11 @@ data "aws_ami" "amazon_linux_us_west_2" {
   owners      = ["amazon"]
   filter {
     name = "name"
-    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+    values = ["amzn2-ami-hvm-*-arm64-gp2"]
+  }
+  filter {
+    name   = "architecture"
+    values = ["arm64"]
   }
 }
 
@@ -49,7 +65,11 @@ data "aws_ami" "amazon_linux_ca_central_1" {
   owners      = ["amazon"]
   filter {
     name = "name"
-    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+    values = ["amzn2-ami-hvm-*-arm64-gp2"]
+  }
+  filter {
+    name   = "architecture"
+    values = ["arm64"]
   }
 }
 
@@ -59,7 +79,11 @@ data "aws_ami" "amazon_linux_sa_east_1" {
   owners      = ["amazon"]
   filter {
     name = "name"
-    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+    values = ["amzn2-ami-hvm-*-arm64-gp2"]
+  }
+  filter {
+    name   = "architecture"
+    values = ["arm64"]
   }
 }
 
@@ -70,7 +94,11 @@ data "aws_ami" "amazon_linux_eu_west_1" {
   owners      = ["amazon"]
   filter {
     name = "name"
-    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+    values = ["amzn2-ami-hvm-*-arm64-gp2"]
+  }
+  filter {
+    name   = "architecture"
+    values = ["arm64"]
   }
 }
 
@@ -80,7 +108,11 @@ data "aws_ami" "amazon_linux_eu_west_2" {
   owners      = ["amazon"]
   filter {
     name = "name"
-    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+    values = ["amzn2-ami-hvm-*-arm64-gp2"]
+  }
+  filter {
+    name   = "architecture"
+    values = ["arm64"]
   }
 }
 
@@ -90,7 +122,11 @@ data "aws_ami" "amazon_linux_eu_west_3" {
   owners      = ["amazon"]
   filter {
     name = "name"
-    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+    values = ["amzn2-ami-hvm-*-arm64-gp2"]
+  }
+  filter {
+    name   = "architecture"
+    values = ["arm64"]
   }
 }
 
@@ -100,7 +136,11 @@ data "aws_ami" "amazon_linux_eu_central_1" {
   owners      = ["amazon"]
   filter {
     name = "name"
-    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+    values = ["amzn2-ami-hvm-*-arm64-gp2"]
+  }
+  filter {
+    name   = "architecture"
+    values = ["arm64"]
   }
 }
 
@@ -110,7 +150,11 @@ data "aws_ami" "amazon_linux_eu_north_1" {
   owners      = ["amazon"]
   filter {
     name = "name"
-    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+    values = ["amzn2-ami-hvm-*-arm64-gp2"]
+  }
+  filter {
+    name   = "architecture"
+    values = ["arm64"]
   }
 }
 
@@ -120,7 +164,11 @@ data "aws_ami" "amazon_linux_eu_south_1" {
   owners      = ["amazon"]
   filter {
     name = "name"
-    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+    values = ["amzn2-ami-hvm-*-arm64-gp2"]
+  }
+  filter {
+    name   = "architecture"
+    values = ["arm64"]
   }
 }
 
@@ -130,7 +178,11 @@ data "aws_ami" "amazon_linux_eu_south_2" {
   owners      = ["amazon"]
   filter {
     name = "name"
-    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+    values = ["amzn2-ami-hvm-*-arm64-gp2"]
+  }
+  filter {
+    name   = "architecture"
+    values = ["arm64"]
   }
 }
 
@@ -140,7 +192,11 @@ data "aws_ami" "amazon_linux_eu_central_2" {
   owners      = ["amazon"]
   filter {
     name = "name"
-    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+    values = ["amzn2-ami-hvm-*-arm64-gp2"]
+  }
+  filter {
+    name   = "architecture"
+    values = ["arm64"]
   }
 }
 
@@ -151,7 +207,11 @@ data "aws_ami" "amazon_linux_me_central_1" {
   owners      = ["amazon"]
   filter {
     name = "name"
-    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+    values = ["amzn2-ami-hvm-*-arm64-gp2"]
+  }
+  filter {
+    name   = "architecture"
+    values = ["arm64"]
   }
 }
 
@@ -161,7 +221,11 @@ data "aws_ami" "amazon_linux_me_south_1" {
   owners      = ["amazon"]
   filter {
     name = "name"
-    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+    values = ["amzn2-ami-hvm-*-arm64-gp2"]
+  }
+  filter {
+    name   = "architecture"
+    values = ["arm64"]
   }
 }
 
@@ -171,7 +235,11 @@ data "aws_ami" "amazon_linux_il_central_1" {
   owners      = ["amazon"]
   filter {
     name = "name"
-    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+    values = ["amzn2-ami-hvm-*-arm64-gp2"]
+  }
+  filter {
+    name   = "architecture"
+    values = ["arm64"]
   }
 }
 
@@ -183,7 +251,11 @@ data "aws_ami" "amazon_linux_af_south_1" {
   owners      = ["amazon"]
   filter {
     name = "name"
-    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+    values = ["amzn2-ami-hvm-*-arm64-gp2"]
+  }
+  filter {
+    name   = "architecture"
+    values = ["arm64"]
   }
 }
 
@@ -194,7 +266,11 @@ data "aws_ami" "amazon_linux_ap_south_1" {
   owners      = ["amazon"]
   filter {
     name = "name"
-    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+    values = ["amzn2-ami-hvm-*-arm64-gp2"]
+  }
+  filter {
+    name   = "architecture"
+    values = ["arm64"]
   }
 }
 
@@ -204,7 +280,11 @@ data "aws_ami" "amazon_linux_ap_south_2" {
   owners      = ["amazon"]
   filter {
     name = "name"
-    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+    values = ["amzn2-ami-hvm-*-arm64-gp2"]
+  }
+  filter {
+    name   = "architecture"
+    values = ["arm64"]
   }
 }
 
@@ -214,7 +294,11 @@ data "aws_ami" "amazon_linux_ap_southeast_1" {
   owners      = ["amazon"]
   filter {
     name = "name"
-    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+    values = ["amzn2-ami-hvm-*-arm64-gp2"]
+  }
+  filter {
+    name   = "architecture"
+    values = ["arm64"]
   }
 }
 
@@ -224,7 +308,11 @@ data "aws_ami" "amazon_linux_ap_southeast_2" {
   owners      = ["amazon"]
   filter {
     name = "name"
-    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+    values = ["amzn2-ami-hvm-*-arm64-gp2"]
+  }
+  filter {
+    name   = "architecture"
+    values = ["arm64"]
   }
 }
 
@@ -234,7 +322,11 @@ data "aws_ami" "amazon_linux_ap_southeast_3" {
   owners      = ["amazon"]
   filter {
     name = "name"
-    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+    values = ["amzn2-ami-hvm-*-arm64-gp2"]
+  }
+  filter {
+    name   = "architecture"
+    values = ["arm64"]
   }
 }
 
@@ -244,7 +336,11 @@ data "aws_ami" "amazon_linux_ap_southeast_4" {
   owners      = ["amazon"]
   filter {
     name = "name"
-    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+    values = ["amzn2-ami-hvm-*-arm64-gp2"]
+  }
+  filter {
+    name   = "architecture"
+    values = ["arm64"]
   }
 }
 
@@ -254,7 +350,11 @@ data "aws_ami" "amazon_linux_ap_southeast_5" {
   owners      = ["amazon"]
   filter {
     name = "name"
-    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+    values = ["amzn2-ami-hvm-*-arm64-gp2"]
+  }
+  filter {
+    name   = "architecture"
+    values = ["arm64"]
   }
 }
 
@@ -264,7 +364,11 @@ data "aws_ami" "amazon_linux_ap_southeast_7" {
   owners      = ["amazon"]
   filter {
     name = "name"
-    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+    values = ["amzn2-ami-hvm-*-arm64-gp2"]
+  }
+  filter {
+    name   = "architecture"
+    values = ["arm64"]
   }
 }
 
@@ -274,7 +378,11 @@ data "aws_ami" "amazon_linux_ap_east_1" {
   owners      = ["amazon"]
   filter {
     name = "name"
-    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+    values = ["amzn2-ami-hvm-*-arm64-gp2"]
+  }
+  filter {
+    name   = "architecture"
+    values = ["arm64"]
   }
 }
 
@@ -284,7 +392,11 @@ data "aws_ami" "amazon_linux_ap_northeast_1" {
   owners      = ["amazon"]
   filter {
     name = "name"
-    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+    values = ["amzn2-ami-hvm-*-arm64-gp2"]
+  }
+  filter {
+    name   = "architecture"
+    values = ["arm64"]
   }
 }
 
@@ -294,7 +406,11 @@ data "aws_ami" "amazon_linux_ap_northeast_2" {
   owners      = ["amazon"]
   filter {
     name = "name"
-    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+    values = ["amzn2-ami-hvm-*-arm64-gp2"]
+  }
+  filter {
+    name   = "architecture"
+    values = ["arm64"]
   }
 }
 
@@ -304,6 +420,10 @@ data "aws_ami" "amazon_linux_ap_northeast_3" {
   owners      = ["amazon"]
   filter {
     name = "name"
-    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+    values = ["amzn2-ami-hvm-*-arm64-gp2"]
+  }
+  filter {
+    name   = "architecture"
+    values = ["arm64"]
   }
 }

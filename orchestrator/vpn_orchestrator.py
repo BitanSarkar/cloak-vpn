@@ -6,15 +6,16 @@ import signal
 import sys
 import time
 import random
+from pathlib import Path
 from datetime import datetime
 from download_ovpn import download_ovpn_files
 
-
-TERRAFORM_DIR = os.path.dirname(os.path.abspath(__file__))
-REGIONS_FILE = os.path.join(TERRAFORM_DIR, "regions.json")
-VPN_CONFIG_DIR = os.path.join(TERRAFORM_DIR, "vpn-configs")
-PUBLIC_IPS_FILE = os.path.join(TERRAFORM_DIR, "vpn_public_ips.json")
-LOG_FILE = os.path.join(TERRAFORM_DIR, f"cloakvpn.log")
+BASE_DIR = Path(__file__).resolve().parents[1]  # project root
+TERRAFORM_DIR = BASE_DIR / "terraform"
+ORCHESTRATOR_DIR = BASE_DIR / "orchestrator"
+REGIONS_FILE = os.path.join(ORCHESTRATOR_DIR, "regions.json")
+VPN_CONFIG_DIR = os.path.join(ORCHESTRATOR_DIR, "vpn-configs")
+LOG_FILE = os.path.join(ORCHESTRATOR_DIR, f"cloakvpn.log")
 
 def parse_args():
     parser = argparse.ArgumentParser(description="CloakVPN: Stealthy VPN Rotator with OpenVPN + Terraform")
@@ -53,11 +54,9 @@ def run_terraform_destroy():
 
 
 def export_terraform_output():
-    result = subprocess.run(["terraform", "output", "-json"], cwd=TERRAFORM_DIR, capture_output=True, text=True)
+    result = subprocess.run(["terraform", "output", "-json", "vpn_public_ips"], cwd=TERRAFORM_DIR, capture_output=True, text=True)
     output = json.loads(result.stdout)
-    with open(PUBLIC_IPS_FILE, "w") as f:
-        json.dump(output.get("vpn_public_ips", {}), f, indent=2)
-    return output.get("vpn_public_ips", {})
+    return output
 
 def get_network_services():
     result = subprocess.run(["networksetup", "-listallnetworkservices"], capture_output=True, text=True)
@@ -165,8 +164,12 @@ def main():
         log("Applying infrastructure")
         run_terraform_apply()
 
+        log("Exporting terraform output json")
+        ip_map = export_terraform_output()
+        log(f"Got Terraform output JSON as {ip_map}")
+
         log("Exporting terraform outputs to file and Downloading .ovpn files from remote instances")
-        download_ovpn_files()
+        download_ovpn_files(ip_map)
 
         log(f"Starting VPN mode: {MODE}")
         if MODE.casefold() == "partial".casefold():

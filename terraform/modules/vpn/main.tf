@@ -19,13 +19,28 @@ resource "aws_internet_gateway" "vpn_igw" {
   }
 }
 
-# Public subnet
+
+data "aws_availability_zones" "available" {
+  state = "available"
+}
+
+locals {
+  bad_list = lookup(var.bad_azs, var.region, [])
+
+  filtered_azs = [
+    for az in data.aws_availability_zones.available.names : az
+    if !(contains(local.bad_list, az))
+  ]
+
+  available_az = local.filtered_azs[0]
+}
+
 resource "aws_subnet" "vpn_subnet" {
-  count = var.instance_count > 0 ? 1 : 0
-  vpc_id = aws_vpc.vpn_vpc[0].id
+  count      = var.instance_count > 0 ? 1 : 0
+  vpc_id     = aws_vpc.vpn_vpc[0].id
   cidr_block = "10.0.1.0/24"
+  availability_zone = local.available_az
   map_public_ip_on_launch = true
-  availability_zone = null
 
   tags = {
     Name = "vpn-subnet-${var.region}"
@@ -95,7 +110,7 @@ resource "aws_security_group" "vpn_sg" {
 # EC2 VPN Instance
 resource "aws_instance" "vpn" {
   ami                         = var.ami
-  instance_type               = var.instance_type
+  instance_type               = "t4g.micro"
   subnet_id                   = aws_subnet.vpn_subnet[0].id
   vpc_security_group_ids      = [aws_security_group.vpn_sg[0].id]
   key_name                    = aws_key_pair.vpn_key[0].key_name

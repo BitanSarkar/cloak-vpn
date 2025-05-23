@@ -10,16 +10,6 @@ RETRY_INTERVAL = 10  # seconds
 
 CONFIG_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "vpn-configs"))
 KEY_PATH = os.path.expanduser("~/.ssh/ghostvpn")
-OUTPUT_FILE = os.path.join(CONFIG_DIR, "vpn_public_ips.json")
-
-def fetch_terraform_output():
-    print(f"[*] Fetching terraform output json")
-    result = subprocess.run(["terraform", "output", "-json", "vpn_public_ips"],
-                            capture_output=True, text=True)
-    if result.returncode != 0:
-        raise Exception(f"Terraform output failed: {result.stderr}")
-    return json.loads(result.stdout)
-
 
 def wait_for_ovpn(ip, retries=MAX_WAIT // RETRY_INTERVAL):
     for attempt in range(retries):
@@ -41,9 +31,8 @@ def wait_for_ovpn(ip, retries=MAX_WAIT // RETRY_INTERVAL):
     return None
 
 
-def download_ovpn_files():
+def download_ovpn_files(ip_map):
     Path(CONFIG_DIR).mkdir(parents=True, exist_ok=True)
-    ip_map = fetch_terraform_output()
     print(f"[*] Complete IP map found {ip_map}.")
 
     for region, ip_list in ip_map.items():

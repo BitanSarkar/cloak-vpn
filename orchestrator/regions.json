@@ -1,20 +1,10 @@
 {
   "regions": {
     "us-east-1": {
-      "count": 1,
-      "instance_type": "t3.micro"
+      "count": 1
     },
     "eu-central-1": {
-      "count": 2,
-      "instance_type": "t3.micro"
-    },
-    "ap-southeast-1": {
-      "count": 1,
-      "instance_type": "t3.micro"
-    },
-    "ap-south-2": {
-      "count": 1,
-      "instance_type": "t3.micro"
+      "count": 1
     }
   }
 }
