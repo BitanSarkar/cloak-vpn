@@ -1,5 +1,5 @@
 import random, os, time
-from utils import log, disable_ipv6, connect_openvpn, kill_process
+from utils import log, disable_ipv6, connect_openvpn, kill_process, enable_ipv6
 from constants import VPN_CONFIG_DIR
 
 proc = None
@@ -57,3 +57,11 @@ def run_mode_full(ovpn_files, ROTATE_INTERVAL, stop_event):
         time.sleep(ROTATE_INTERVAL)
         kill_process(proc)
         proc = None
+
+def stop_vpn():
+    global proc
+    log("Caught termination signal. Cleaning up...")
+    if proc:
+        kill_process(proc)
+        proc = None
+    enable_ipv6()

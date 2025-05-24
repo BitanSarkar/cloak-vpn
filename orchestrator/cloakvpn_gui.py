@@ -5,7 +5,7 @@ import json
 import os
 from constants import AVAILABLE_REGIONS, REGIONS_FILE, VPN_CONFIG_DIR
 from provisioner import startup, cleanup
-from vpn_connector import run_mode_partial, run_mode_full
+from vpn_connector import run_mode_partial, run_mode_full, stop_vpn
 from utils import ping_ips_from_ovpn_files, require_sudo_ui, log
 
 class CloakVPNGui:
@@ -38,7 +38,7 @@ class CloakVPNGui:
         self.build_ping_summary()
 
     def build_region_selector(self):
-        self.region_frame = ttk.LabelFrame(self.root, text="1. Region Selection")
+        self.region_frame = ttk.LabelFrame(self.root, text="Region Selection")
         self.region_frame.grid(row=0, column=0, sticky="nsew", padx=10, pady=5)
 
         canvas = tk.Canvas(self.region_frame)
@@ -61,11 +61,11 @@ class CloakVPNGui:
             self.region_vars[region] = var
 
     def build_provision_controls(self):
-        self.provision_button = ttk.Button(self.root, text="2. Provision + Fetch OVPN", command=self.provision)
+        self.provision_button = ttk.Button(self.root, text="Provision + Fetch OVPN", command=self.provision)
         self.provision_button.grid(row=1, column=0, pady=10)
 
     def build_vpn_mode_controls(self):
-        self.mode_frame = ttk.LabelFrame(self.root, text="3. VPN Configuration")
+        self.mode_frame = ttk.LabelFrame(self.root, text="VPN Configuration")
         self.mode_frame.grid(row=2, column=0, sticky="nsew", padx=10, pady=5)
 
         ttk.Label(self.mode_frame, text="Mode:").grid(row=0, column=0)
@@ -81,8 +81,10 @@ class CloakVPNGui:
         self.region_combo = ttk.Combobox(self.mode_frame, textvariable=self.region_choice_var, state="disabled")
         self.region_combo.grid(row=2, column=1)
 
-        self.start_button = ttk.Button(self.mode_frame, text="4. Start VPN", command=self.launch_vpn, state="disabled")
+        self.start_button = ttk.Button(self.mode_frame, text="Start VPN", command=self.launch_vpn, state="disabled")
         self.start_button.grid(row=3, column=0, columnspan=2, pady=10)
+        self.stop_button = ttk.Button(self.mode_frame, text="Stop VPN", command=self.stop_vpn, state="normal")
+        self.stop_button.grid(row=4, column=0, columnspan=2, pady=5)
 
     def build_ping_summary(self):
         self.ping_frame = ttk.LabelFrame(self.root, text="Ping Summary")
@@ -183,11 +185,15 @@ class CloakVPNGui:
         self.vpn_thread.start()
         messagebox.showinfo("Started", f"VPN started in {mode} mode")
 
-    def handle_exit(self):
+    def stop_vpn(self):
         if self.vpn_thread and self.vpn_thread.is_alive():
-            log("[DEBUG] Stopping VPN before exit...")
+            log("[DEBUG] Stopping VPN thread...")
             self.vpn_stop_event.set()
             self.vpn_thread.join()
+        stop_vpn()
+
+    def handle_exit(self):
+        self.stop_vpn()
         cleanup()
         self.root.destroy()
 
