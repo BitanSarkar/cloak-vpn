@@ -3,10 +3,10 @@
     "us-east-1": {
       "count": 1
     },
-    "eu-central-1": {
+    "us-west-1": {
       "count": 1
     },
-    "ap-northeast-1": {
+    "eu-west-1": {
       "count": 1
     }
   }

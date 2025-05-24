@@ -13,6 +13,9 @@ def require_sudo():
         print("[!] This script must be run with sudo/root privileges.")
         sys.exit(1)
 
+def require_sudo_ui():
+    return os.geteuid() == 0
+
 def get_network_services():
     result = subprocess.run(["networksetup", "-listallnetworkservices"], capture_output=True, text=True)
     services = result.stdout.strip().splitlines()
@@ -63,45 +66,69 @@ def connect_openvpn(config_path):
 def collect_ovpn_paths():
     return [os.path.join(VPN_CONFIG_DIR, f) for f in os.listdir(VPN_CONFIG_DIR) if f.endswith(".ovpn")]
 
-def extract_ip_from_ovpn(file_path):
-    with open(file_path, "r") as f:
-        content = f.read()
-    match = re.search(r"remote (.*?) (\d+)", content)
-    return match.group(1) if match else None
+def extract_ip_from_ovpn(filepath):
+    with open(filepath, 'r') as file:
+        for line in file:
+            if line.startswith("remote"):
+                parts = line.split()
+                if len(parts) >= 2:
+                    return parts[1]  # IP or hostname
+    return None
 
 def ping_ip(ip):
     try:
-        result = subprocess.run(["ping", "-c", "1", "-W", "1", ip], stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True)
-        output = result.stdout
-        match = re.search(r"time=([\d.]+) ms", output)
-        return float(match.group(1)) if match else None
+        result = subprocess.run(["ping", "-c", "50", "-W", "5", ip], capture_output=True, text=True)
+        log(f"[ping_ip] Ping returned for {ip} with exit code {result.returncode}")
+        log(f"[ping_ip] stdout: {result.stdout}")
+        if result.returncode == 0:
+            lines = result.stdout.splitlines()
+            # Try Linux-style first
+            time_line = next((l for l in lines if "time=" in l), None)
+            if time_line:
+                time_part = time_line.split("time=")[-1].split()[0]
+                return float(time_part)
+            # Fallback to macOS summary line
+            summary = next((l for l in lines if "round-trip" in l or "rtt" in l), None)
+            if summary:
+                values = summary.split("=")[-1].strip().split(" ")[0].split("/")
+                if len(values) >= 2:
+                    avg = float(values[1])
+                    return avg
+        else:
+            log(f"[ping_ip] Ping failed for {ip} with exit code {result.returncode}")
+            log(f"[ping_ip] stdout: {result.stdout}")
+            log(f"[ping_ip] stderr: {result.stderr}")
     except Exception as e:
-        log(f"Ping failed for {ip}: {e}")
-        return None
+        log(f"[ping_ip] Exception while pinging {ip}: {e}")
+    return None
 
 def ping_ips_from_ovpn_files():
-    """
-    Scans all .ovpn files in VPN_CONFIG_DIR, extracts IPs, pings them, returns:
-    {
-        "us-east-1": [("us-east-1-0.ovpn", 32.1), ("us-east-1-1.ovpn", 28.9)],
-        ...
-    }
-    """
     region_map = {}
-    for f in os.listdir(VPN_CONFIG_DIR):
+    if not os.path.isdir(VPN_CONFIG_DIR):
+        log(f"[ping_ips_from_ovpn_files] VPN_CONFIG_DIR does not exist: {VPN_CONFIG_DIR}")
+        return region_map
+
+    all_files = os.listdir(VPN_CONFIG_DIR)
+    log(f"[ping_ips_from_ovpn_files] Found files: {all_files}")
+
+    for f in all_files:
         if not f.endswith(".ovpn"):
             continue
         path = os.path.join(VPN_CONFIG_DIR, f)
         ip = extract_ip_from_ovpn(path)
+        log(f"[ping_ips_from_ovpn_files] Extracted IP from {f}: {ip}")
         if not ip:
             continue
         latency = ping_ip(ip)
         if latency is not None:
             region = f.split("-")[0]
+            log(f"[ping_ips_from_ovpn_files] {f} latency: {latency} ms")
             region_map.setdefault(region, []).append((f, latency))
+        else:
+            log(f"[ping_ips_from_ovpn_files] Failed to get latency for {ip} in {f}")
 
-    # Sort files by latency within each region
     for region in region_map:
         region_map[region].sort(key=lambda tup: tup[1])
 
+    log(f"[ping_ips_from_ovpn_files] Final region map: {region_map}")
     return region_map
