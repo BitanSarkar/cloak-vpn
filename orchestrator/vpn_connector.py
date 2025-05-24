@@ -28,3 +28,32 @@ def run_mode_full(ovpn_files, ROTATE_INTERVAL = 60):
         log(f"Connected to {region} for {ROTATE_INTERVAL}s")
         time.sleep(ROTATE_INTERVAL)
         kill_process(proc)
+
+def run_mode_partial(region, ovpn_files, stop_event):
+    global proc
+    log(f"[*] Got regions {region} for partial start-up")
+    filtered = [f for f in ovpn_files if f.startswith(os.path.join(VPN_CONFIG_DIR, f"{region}"))]
+    if not filtered:
+        log(f"[!] No .ovpn files found for region: {region}")
+        raise Exception("No .ovpn files found. Exiting.")
+    disable_ipv6()
+    proc = connect_openvpn(random.choice(filtered))
+    while not stop_event.is_set():
+        if proc.poll() is not None:
+            break
+        time.sleep(1)
+    kill_process(proc)
+    proc = None
+
+def run_mode_full(ovpn_files, ROTATE_INTERVAL, stop_event):
+    global proc
+    if not ovpn_files:
+        log("No .ovpn files found. Exiting.")
+        raise Exception("No .ovpn files found. Exiting.")
+    disable_ipv6()
+    while not stop_event.is_set():
+        config = random.choice(ovpn_files)
+        proc = connect_openvpn(config)
+        time.sleep(ROTATE_INTERVAL)
+        kill_process(proc)
+        proc = None

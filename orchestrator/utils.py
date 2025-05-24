@@ -77,7 +77,7 @@ def extract_ip_from_ovpn(filepath):
 
 def ping_ip(ip):
     try:
-        result = subprocess.run(["ping", "-c", "50", "-W", "5", ip], capture_output=True, text=True)
+        result = subprocess.run(["ping", "-c", "10", "-W", "5", ip], capture_output=True, text=True)
         log(f"[ping_ip] Ping returned for {ip} with exit code {result.returncode}")
         log(f"[ping_ip] stdout: {result.stdout}")
         if result.returncode == 0:
@@ -121,7 +121,7 @@ def ping_ips_from_ovpn_files():
             continue
         latency = ping_ip(ip)
         if latency is not None:
-            region = f.split("-")[0]
+            region = f.split(".")[0]
             log(f"[ping_ips_from_ovpn_files] {f} latency: {latency} ms")
             region_map.setdefault(region, []).append((f, latency))
         else:

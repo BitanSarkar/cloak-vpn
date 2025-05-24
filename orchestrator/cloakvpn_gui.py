@@ -25,6 +25,9 @@ class CloakVPNGui:
         self.ovpn_ping_map = {}
         self.provisioned = False
 
+        self.vpn_thread = None
+        self.vpn_stop_event = threading.Event()
+
         self.mode_var = tk.StringVar(value="full")
         self.interval_var = tk.StringVar(value="60")
         self.region_choice_var = tk.StringVar()
@@ -85,8 +88,8 @@ class CloakVPNGui:
         self.ping_frame = ttk.LabelFrame(self.root, text="Ping Summary")
         self.ping_frame.grid(row=3, column=0, sticky="nsew", padx=10, pady=5)
 
-        self.ping_table = ttk.Treeview(self.ping_frame, columns=("count", "best"), show="headings", height=10)
-        self.ping_table.heading("count", text="Files")
+        self.ping_table = ttk.Treeview(self.ping_frame, columns=("region", "best"), show="headings", height=10)
+        self.ping_table.heading("region", text="Region")
         self.ping_table.heading("best", text="Best Ping (ms)")
         self.ping_table.grid(row=0, column=0, sticky="nsew")
 
@@ -140,7 +143,7 @@ class CloakVPNGui:
             self.ping_table.delete(row)
         for region, items in self.ovpn_ping_map.items():
             best = items[0][1] if items else "-"
-            self.ping_table.insert("", "end", values=(region, len(items), best))
+            self.ping_table.insert("", "end", values=(region, best))
 
     def launch_vpn(self):
         mode = self.mode_var.get()
@@ -155,14 +158,36 @@ class CloakVPNGui:
         for path in all_ovpns:
             log(f"  {path} - Exists: {os.path.exists(path)}")
 
+        # Kill any previous thread/process
+        if self.vpn_thread and self.vpn_thread.is_alive():
+            log("[DEBUG] Stopping previous VPN thread...")
+            self.vpn_stop_event.set()
+            self.vpn_thread.join()
+
+        # Start new one
+        self.vpn_stop_event = threading.Event()
         if mode == "partial":
             region = self.region_choice_var.get()
-            threading.Thread(target=run_mode_partial, args=(region, all_ovpns), daemon=True).start()
+            self.vpn_thread = threading.Thread(
+                target=run_mode_partial,
+                args=(region, all_ovpns, self.vpn_stop_event),
+                daemon=True
+            )
         else:
-            threading.Thread(target=run_mode_full, args=(all_ovpns, interval), daemon=True).start()
+            self.vpn_thread = threading.Thread(
+                target=run_mode_full,
+                args=(all_ovpns, interval, self.vpn_stop_event),
+                daemon=True
+            )
+
+        self.vpn_thread.start()
         messagebox.showinfo("Started", f"VPN started in {mode} mode")
 
     def handle_exit(self):
+        if self.vpn_thread and self.vpn_thread.is_alive():
+            log("[DEBUG] Stopping VPN before exit...")
+            self.vpn_stop_event.set()
+            self.vpn_thread.join()
         cleanup()
         self.root.destroy()
 
