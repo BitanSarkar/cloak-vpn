@@ -10,3 +10,7 @@ variable "bad_azs" {
     "us-east-1" = ["us-east-1e"]
   }
 }
+variable "my_public_ip" {
+  type = string
+  default = "0.0.0.0/0"
+}

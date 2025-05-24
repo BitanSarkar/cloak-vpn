@@ -3,6 +3,7 @@ from tkinter import ttk, messagebox
 import threading
 import json
 import os
+import requests
 from constants import AVAILABLE_REGIONS, REGIONS_FILE, VPN_CONFIG_DIR
 from provisioner import startup, cleanup
 from vpn_connector import run_mode_partial, run_mode_full, stop_vpn
@@ -104,20 +105,25 @@ class CloakVPNGui:
             self.region_combo.config(state="readonly")
         else:
             self.region_combo.config(state="disabled")
-
+    def get_public_ip(self):
+        try:
+            ip = requests.get("https://api.ipify.org").text.strip()
+            return ip
+        except Exception as e:
+            print(f"[ERROR] Could not fetch public IP: {e}")
+            return None
     def provision(self):
         selected = {r: v.get() for r, v in self.region_vars.items() if v.get() > 0}
         if not selected:
             messagebox.showerror("Input Error", "Please select at least one region.")
             return
-
         self.provision_button.config(state="disabled")
-
         def task():
             region_payload = {
                 "regions": {
                     r: {"count": c} for r, c in selected.items()
-                }
+                },
+                "my_public_ip": self.get_public_ip() + "/32"
             }
             with open(REGIONS_FILE, "w") as f:
                 json.dump(region_payload, f, indent=2)

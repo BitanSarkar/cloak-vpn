@@ -18,6 +18,7 @@ module "vpn_us_east_1" {
   providers      = { aws = aws.us-east-1 }
   region         = "us-east-1"
   ami            = data.aws_ami.amazon_linux_us_east_1.id
+  my_public_ip   = var.my_public_ip
 }
 
 module "vpn_us_east_2" {
@@ -26,6 +27,7 @@ module "vpn_us_east_2" {
   providers      = { aws = aws.us-east-2 }
   region         = "us-east-2"
   ami            = data.aws_ami.amazon_linux_us_east_2.id
+  my_public_ip   = var.my_public_ip
 }
 
 module "vpn_us_west_1" {
@@ -34,6 +36,7 @@ module "vpn_us_west_1" {
   providers      = { aws = aws.us-west-1 }
   region         = "us-west-1"
   ami            = data.aws_ami.amazon_linux_us_west_1.id
+  my_public_ip   = var.my_public_ip
 }
 
 module "vpn_us_west_2" {
@@ -42,6 +45,7 @@ module "vpn_us_west_2" {
   providers      = { aws = aws.us-west-2 }
   region         = "us-west-2"
   ami            = data.aws_ami.amazon_linux_us_west_2.id
+  my_public_ip   = var.my_public_ip
 }
 
 module "vpn_ca_central_1" {
@@ -50,6 +54,7 @@ module "vpn_ca_central_1" {
   providers      = { aws = aws.ca-central-1 }
   region         = "ca-central-1"
   ami            = data.aws_ami.amazon_linux_ca_central_1.id
+  my_public_ip   = var.my_public_ip
 }
 
 module "vpn_sa_east_1" {
@@ -58,6 +63,7 @@ module "vpn_sa_east_1" {
   providers      = { aws = aws.sa-east-1 }
   region         = "sa-east-1"
   ami            = data.aws_ami.amazon_linux_sa_east_1.id
+  my_public_ip   = var.my_public_ip
 }
 
 module "vpn_eu_west_1" {
@@ -66,6 +72,7 @@ module "vpn_eu_west_1" {
   providers      = { aws = aws.eu-west-1 }
   region         = "eu-west-1"
   ami            = data.aws_ami.amazon_linux_eu_west_1.id
+  my_public_ip   = var.my_public_ip
 }
 
 module "vpn_eu_west_2" {
@@ -74,6 +81,7 @@ module "vpn_eu_west_2" {
   providers      = { aws = aws.eu-west-2 }
   region         = "eu-west-2"
   ami            = data.aws_ami.amazon_linux_eu_west_2.id
+  my_public_ip   = var.my_public_ip
 }
 
 module "vpn_eu_west_3" {
@@ -82,6 +90,7 @@ module "vpn_eu_west_3" {
   providers      = { aws = aws.eu-west-3 }
   region         = "eu-west-3"
   ami            = data.aws_ami.amazon_linux_eu_west_3.id
+  my_public_ip   = var.my_public_ip
 }
 
 module "vpn_eu_north_1" {
@@ -90,6 +99,7 @@ module "vpn_eu_north_1" {
   providers      = { aws = aws.eu-north-1 }
   region         = "eu-north-1"
   ami            = data.aws_ami.amazon_linux_eu_north_1.id
+  my_public_ip   = var.my_public_ip
 }
 
 module "vpn_eu_central_1" {
@@ -98,6 +108,7 @@ module "vpn_eu_central_1" {
   providers      = { aws = aws.eu-central-1 }
   region         = "eu-central-1"
   ami            = data.aws_ami.amazon_linux_eu_central_1.id
+  my_public_ip   = var.my_public_ip
 }
 
 module "vpn_eu_central_2" {
@@ -106,6 +117,7 @@ module "vpn_eu_central_2" {
   providers      = { aws = aws.eu-central-2 }
   region         = "eu-central-2"
   ami            = data.aws_ami.amazon_linux_eu_central_2.id
+  my_public_ip   = var.my_public_ip
 }
 
 module "vpn_eu_south_1" {
@@ -114,6 +126,7 @@ module "vpn_eu_south_1" {
   providers      = { aws = aws.eu-south-1 }
   region         = "eu-south-1"
   ami            = data.aws_ami.amazon_linux_eu_south_1.id
+  my_public_ip   = var.my_public_ip
 }
 
 module "vpn_eu_south_2" {
@@ -122,6 +135,7 @@ module "vpn_eu_south_2" {
   providers      = { aws = aws.eu-south-2 }
   region         = "eu-south-2"
   ami            = data.aws_ami.amazon_linux_eu_south_2.id
+  my_public_ip   = var.my_public_ip
 }
 
 module "vpn_me_central_1" {
@@ -130,6 +144,7 @@ module "vpn_me_central_1" {
   providers      = { aws = aws.me-central-1 }
   region         = "me-central-1"
   ami            = data.aws_ami.amazon_linux_me_central_1.id
+  my_public_ip   = var.my_public_ip
 }
 
 module "vpn_me_south_1" {
@@ -138,6 +153,7 @@ module "vpn_me_south_1" {
   providers      = { aws = aws.me-south-1 }
   region         = "me-south-1"
   ami            = data.aws_ami.amazon_linux_me_south_1.id
+  my_public_ip   = var.my_public_ip
 }
 
 module "vpn_il_central_1" {
@@ -146,6 +162,7 @@ module "vpn_il_central_1" {
   providers      = { aws = aws.il-central-1 }
   region         = "il-central-1"
   ami            = data.aws_ami.amazon_linux_il_central_1.id
+  my_public_ip   = var.my_public_ip
 }
 
 module "vpn_af_south_1" {
@@ -154,6 +171,7 @@ module "vpn_af_south_1" {
   providers      = { aws = aws.af-south-1 }
   region         = "af-south-1"
   ami            = data.aws_ami.amazon_linux_af_south_1.id
+  my_public_ip   = var.my_public_ip
 }
 
 module "vpn_ap_south_1" {
@@ -162,6 +180,7 @@ module "vpn_ap_south_1" {
   providers      = { aws = aws.ap-south-1 }
   region         = "ap-south-1"
   ami            = data.aws_ami.amazon_linux_ap_south_1.id
+  my_public_ip   = var.my_public_ip
 }
 
 module "vpn_ap_south_2" {
@@ -170,6 +189,7 @@ module "vpn_ap_south_2" {
   providers      = { aws = aws.ap-south-2 }
   region         = "ap-south-2"
   ami            = data.aws_ami.amazon_linux_ap_south_2.id
+  my_public_ip   = var.my_public_ip
 }
 
 module "vpn_ap_southeast_1" {
@@ -178,6 +198,7 @@ module "vpn_ap_southeast_1" {
   providers      = { aws = aws.ap-southeast-1 }
   region         = "ap-southeast-1"
   ami            = data.aws_ami.amazon_linux_ap_southeast_1.id
+  my_public_ip   = var.my_public_ip
 }
 
 module "vpn_ap_southeast_2" {
@@ -186,6 +207,7 @@ module "vpn_ap_southeast_2" {
   providers      = { aws = aws.ap-southeast-2 }
   region         = "ap-southeast-2"
   ami            = data.aws_ami.amazon_linux_ap_southeast_2.id
+  my_public_ip   = var.my_public_ip
 }
 
 module "vpn_ap_southeast_3" {
@@ -194,6 +216,7 @@ module "vpn_ap_southeast_3" {
   providers      = { aws = aws.ap-southeast-3 }
   region         = "ap-southeast-3"
   ami            = data.aws_ami.amazon_linux_ap_southeast_3.id
+  my_public_ip   = var.my_public_ip
 }
 
 module "vpn_ap_southeast_4" {
@@ -202,6 +225,7 @@ module "vpn_ap_southeast_4" {
   providers      = { aws = aws.ap-southeast-4 }
   region         = "ap-southeast-4"
   ami            = data.aws_ami.amazon_linux_ap_southeast_4.id
+  my_public_ip   = var.my_public_ip
 }
 
 module "vpn_ap_southeast_5" {
@@ -210,6 +234,7 @@ module "vpn_ap_southeast_5" {
   providers      = { aws = aws.ap-southeast-5 }
   region         = "ap-southeast-5"
   ami            = data.aws_ami.amazon_linux_ap_southeast_5.id
+  my_public_ip   = var.my_public_ip
 }
 
 module "vpn_ap_southeast_7" {
@@ -218,6 +243,7 @@ module "vpn_ap_southeast_7" {
   providers      = { aws = aws.ap-southeast-7 }
   region         = "ap-southeast-7"
   ami            = data.aws_ami.amazon_linux_ap_southeast_7.id
+  my_public_ip   = var.my_public_ip
 }
 
 module "vpn_ap_east_1" {
@@ -226,6 +252,7 @@ module "vpn_ap_east_1" {
   providers      = { aws = aws.ap-east-1 }
   region         = "ap-east-1"
   ami            = data.aws_ami.amazon_linux_ap_east_1.id
+  my_public_ip   = var.my_public_ip
 }
 
 module "vpn_ap_northeast_1" {
@@ -234,6 +261,7 @@ module "vpn_ap_northeast_1" {
   providers      = { aws = aws.ap-northeast-1 }
   region         = "ap-northeast-1"
   ami            = data.aws_ami.amazon_linux_ap_northeast_1.id
+  my_public_ip   = var.my_public_ip
 }
 
 module "vpn_ap_northeast_2" {
@@ -242,6 +270,7 @@ module "vpn_ap_northeast_2" {
   providers      = { aws = aws.ap-northeast-2 }
   region         = "ap-northeast-2"
   ami            = data.aws_ami.amazon_linux_ap_northeast_2.id
+  my_public_ip   = var.my_public_ip
 }
 
 module "vpn_ap_northeast_3" {
@@ -250,4 +279,5 @@ module "vpn_ap_northeast_3" {
   providers      = { aws = aws.ap-northeast-3 }
   region         = "ap-northeast-3"
   ami            = data.aws_ami.amazon_linux_ap_northeast_3.id
+  my_public_ip   = var.my_public_ip
 }

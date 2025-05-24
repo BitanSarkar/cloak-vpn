@@ -5,15 +5,7 @@
     },
     "us-west-1": {
       "count": 1
-    },
-    "us-west-2": {
-      "count": 1
-    },
-    "ap-south-1": {
-      "count": 1
-    },
-    "ap-northeast-1": {
-      "count": 1
     }
-  }
+  },
+  "my_public_ip": "0.0.0.0/32"
 }
