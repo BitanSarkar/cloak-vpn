@@ -2,7 +2,10 @@ import random, os, time
 from utils import log, disable_ipv6, connect_openvpn, kill_process
 from constants import VPN_CONFIG_DIR
 
+proc = None
+
 def run_mode_partial(region, ovpn_files):
+    global proc
     filtered = [f for f in ovpn_files if f.startswith(os.path.join(VPN_CONFIG_DIR, f"{region}-"))]
     if not filtered:
         log(f"[!] No .ovpn files found for region: {region}")
@@ -13,6 +16,7 @@ def run_mode_partial(region, ovpn_files):
 
 
 def run_mode_full(ovpn_files, ROTATE_INTERVAL = 60):
+    global proc
     if not ovpn_files:
         log("No .ovpn files found. Exiting.")
         raise Exception("No .ovpn files found. Exiting.")

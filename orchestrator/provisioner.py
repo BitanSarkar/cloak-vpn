@@ -2,6 +2,7 @@ import subprocess, sys, json
 from download_ovpn import download_ovpn_files
 from constants import TERRAFORM_DIR, REGIONS_FILE
 from utils import log, enable_ipv6, kill_process
+from vpn_connector import proc
 
 def run_terraform_init():
     subprocess.run(["terraform", "init"], check=True, cwd=TERRAFORM_DIR)
@@ -21,6 +22,7 @@ def export_terraform_output():
 
 def cleanup():
     log("Caught termination signal. Cleaning up...")
+    kill_process(proc)
     enable_ipv6()
     run_terraform_destroy()
     sys.exit(0)
