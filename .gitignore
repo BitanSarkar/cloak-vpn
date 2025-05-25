@@ -6,4 +6,5 @@
 */__pycache__/*
 */terraform.tfstate
 *.ovpn
-*./regions.json
+*regions.json
+*.tfstate
