@@ -300,14 +300,14 @@ class CloakVPNGui:
         messagebox.showinfo("Started", f"VPN started in {mode} mode")
 
     def stop_vpn_ui(self):
-        self.stop_button.config(state="disabled")
-        self.start_button.config(state="normal")
-        self.destroy_button.config(state="normal")
         if self.vpn_thread and self.vpn_thread.is_alive():
             self.log_ui("[DEBUG] Stopping VPN thread...")
             self.vpn_stop_event.set()
             self.vpn_thread.join()
         stop_vpn(log_hook=self.log_ui)
+        self.start_button.config(state="normal")
+        self.destroy_button.config(state="normal")
+        self.stop_button.config(state="disabled")
 
     def handle_exit(self):
         self.stop_vpn_ui()

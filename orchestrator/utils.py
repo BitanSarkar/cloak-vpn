@@ -1,4 +1,4 @@
-import os, sys, subprocess, json, re
+import os, sys, subprocess, json, re, threading
 from ping3 import ping, verbose_ping
 from datetime import datetime
 from constants import LOG_FILE, REGIONS_FILE, VPN_CONFIG_DIR
@@ -76,15 +76,14 @@ def connect_openvpn(config_path, log_hook=None):
         text=True,
         bufsize=1
     )
+    def stream_logs():
+        for line in process.stdout:
+            log(line.rstrip(), log_hook)
 
-    for line in process.stdout:
-        log_hook(line.rstrip())
+    log_thread = threading.Thread(target=stream_logs, daemon=True)
+    log_thread.start()
 
-    process.stdout.close()
-    return_code = process.wait()
-
-    if return_code != 0:
-        raise subprocess.CalledProcessError(return_code)
+    return process
 
 def collect_ovpn_paths():
     return [os.path.join(VPN_CONFIG_DIR, f) for f in os.listdir(VPN_CONFIG_DIR) if f.endswith(".ovpn")]
@@ -95,7 +94,7 @@ def extract_ip_from_ovpn(filepath):
             if line.startswith("remote"):
                 parts = line.split()
                 if len(parts) >= 2:
-                    return parts[1]  # IP or hostname
+                    return parts[1]
     return None
 
 def ping_ip(ip, count=5, timeout=2, log_hook=None):

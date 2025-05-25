@@ -181,6 +181,43 @@ Generated automatically via GUI.
 
 ---
 
+## ⚠️ Disclaimer & Manual Recovery
+
+CloakVPN automates infrastructure provisioning and VPN rotation, but **unexpected crashes or forced exits** may leave resources running in the background.
+
+If the app crashes or you force-quit it, follow these manual steps to clean up:
+
+### 🛠️ Manual Cleanup Steps
+
+**1. Check if OpenVPN is still running:**
+```
+ps aux | grep openvpn
+```
+
+**2. Kill any lingering OpenVPN processes:**
+```
+sudo kill -9 <PID>
+```
+
+**3. Destroy AWS infrastructure manually:**
+From the project root:
+```
+cd terraform
+sudo terraform destroy -auto-approve -var-file=../orchestrator/regions.json
+```
+
+**4. (Optional) Delete any downloaded `.ovpn` files:**
+```
+rm -f orchestrator/vpn-configs/*.ovpn
+```
+
+**5. Verify on AWS Console:**
+Make sure no EC2 instances are left running under your account.
+
+> ⚠️ If OpenVPN is left running or EC2 instances are not destroyed, traffic may still be routed and AWS charges may accrue.
+
+---
+
 ## 📜 License
 
 MIT. Free to use, extend, and modify.
