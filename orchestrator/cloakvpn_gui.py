@@ -183,10 +183,10 @@ class CloakVPNGui:
                 self.update_ping_table()
                 self.region_combo.config(values=[])
                 messagebox.showinfo("Cleanup", "Infrastructure destroyed and configs deleted.")
+                self.provision_button.config(state="normal")
             except Exception as e:
                 self.log_ui(f"[ERROR] Failed to destroy provision: {e}")
                 messagebox.showerror("Error", f"Failed: {e}")
-
         threading.Thread(target=task, daemon=True).start()
 
 
