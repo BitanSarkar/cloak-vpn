@@ -179,6 +179,8 @@ class CloakVPNGui:
                 for file in VPN_CONFIG_DIR.iterdir():
                     if file.name != ".gitkeep":
                         file.unlink()
+                        self.log_ui("🗑️ Deleted {file.name}...")
+                self.log_ui("🗑️ All OVPN files deleted...")
                 self.ovpn_ping_map.clear()
                 self.update_ping_table()
                 self.region_combo.config(values=[])
