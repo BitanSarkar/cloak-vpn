@@ -26,6 +26,10 @@ CloakVPN is a fully automated, cross-platform, GUI-powered stealth VPN system. I
 
 ---
 
+## 🖼 Architecture Overview
+![Overview](docs/screenshot_overview.png)
+---
+
 ## 📁 Folder Structure
 
 ```
