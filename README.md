@@ -28,6 +28,7 @@ CloakVPN is a fully automated, cross-platform, GUI-powered stealth VPN system. I
 
 ## 📁 Folder Structure
 
+```
 cloakvpn/
 ├── terraform/                # Terraform infra definitions
 │   ├── main.tf
@@ -55,6 +56,7 @@ cloakvpn/
 ├── run_gui.sh                # Shell wrapper for GUI
 ├── README.md
 └── requirements.txt
+```
 
 ---
 
@@ -76,76 +78,84 @@ cloakvpn/
 ```bash
 git clone https://github.com/yourname/cloakvpn.git
 cd cloakvpn
+```
 
-2. Create and activate a virtual environment (recommended)
+### 2. Create and activate a virtual environment (recommended)
 
+```bash
 python3 -m venv venv
 source venv/bin/activate
+```
 
-3. Install dependencies
+### 3. Install dependencies
 
+```bash
 pip install -r requirements.txt
+```
 
-4. Ensure SSH key exists
+### 4. Ensure SSH key exists
 
+```bash
 ls ~/.ssh/ghostvpn ~/.ssh/ghostvpn.pub
+```
 
+---
 
-⸻
+## 🖥️ Launching the GUI
 
-🖥️ Launching the GUI
-
+```bash
 chmod +x run_gui.sh
 ./run_gui.sh
+```
 
+---
 
-⸻
+## 🧭 Modes Explained
 
-🧭 Modes Explained
+### ✅ Full Cloak Mode
+- Rotates across regions every `N` seconds
+- Changes IPs, fingerprints (optionally via browser launcher)
+- Good for scraping, stealth ops
 
-✅ Full Cloak Mode
-	•	Rotates across regions every N seconds
-	•	Changes IPs, fingerprints (optionally via browser launcher)
-	•	Good for scraping, stealth ops
+### ✅ Partial Cloak Mode
+- Fixed region (e.g. EU) with static IP
+- Rotates fingerprints only
+- Ideal for static-region compliance testing or data access
 
-✅ Partial Cloak Mode
-	•	Fixed region (e.g. EU) with static IP
-	•	Rotates fingerprints only
-	•	Ideal for static-region compliance testing or data access
+---
 
-⸻
+## 🔧 How It Works
 
-🔧 How It Works
+### 🔨 Provisioning
+- Terraform launches OpenVPN instances
+- Security groups opened (22 for OVPN fetch, 1194 for UDP)
+- Public IPs are captured and saved to `vpn_public_ips.json`
 
-🔨 Provisioning
-	•	Terraform launches OpenVPN instances
-	•	Security groups opened (22 for OVPN fetch, 1194 for UDP)
-	•	Public IPs are captured and saved to vpn_public_ips.json
+### 📥 OVPN Fetch
+- Python downloads `.ovpn` files using `scp`
+- Cleans up previous configs
+- Pings each IP to calculate latency
 
-📥 OVPN Fetch
-	•	Python downloads .ovpn files using scp
-	•	Cleans up previous configs
-	•	Pings each IP to calculate latency
+### 🌐 VPN Launch
+- `openvpn` launched in background via Python
+- Switches `.ovpn` every `N` seconds in Full mode
+- GUI shows real-time logs, control buttons, and ping rankings
 
-🌐 VPN Launch
-	•	openvpn launched in background via Python
-	•	Switches .ovpn every N seconds in Full mode
-	•	GUI shows real-time logs, control buttons, and ping rankings
+---
 
-⸻
-
-🧼 Cleanup
+## 🧼 Cleanup
 
 VPN stop/exit does:
-	•	Disconnects OpenVPN
-	•	Re-enables IPv6
-	•	Destroys all Terraform infrastructure
-	•	Deletes .ovpn files
+- Disconnects OpenVPN
+- Re-enables IPv6
+- Destroys all Terraform infrastructure
+- Deletes `.ovpn` files
 
-⸻
+---
 
-🧪 Example regions.json
+## 🧪 Example regions.json
 
+```json
 {
   "regions": {
     "us-east-1": { "count": 1 },
@@ -153,34 +163,37 @@ VPN stop/exit does:
   },
   "my_public_ip": "xx.xx.xx.xx/32"
 }
+```
 
 Generated automatically via GUI.
 
-⸻
+---
 
-🔒 Security
-	•	OVPN access restricted via dynamic IP whitelisting
-	•	SSH disabled after provisioning (port 22 not needed beyond fetch)
-	•	IPv6 disabled during session
+## 🔒 Security
 
-⸻
+- OVPN access restricted via dynamic IP whitelisting
+- SSH disabled after provisioning (port 22 not needed beyond fetch)
+- IPv6 disabled during session
 
-📜 License
+---
+
+## 📜 License
 
 MIT. Free to use, extend, and modify.
 
-⸻
+---
 
-🙋‍♂️ Author
+## 🙋‍♂️ Author
 
-Built with ❤️ by Bitan Sarkar
+Built with ❤️ by [Bitan Sarkar](https://www.linkedin.com/in/bitan-sarkar-338065162)
 
-⸻
+---
 
-✨ Future Work
-	•	Browser fingerprint rotation via Playwright Extra
-	•	SOCKS5 + Tor fallback
-	•	Custom AMI support
-	•	Dynamic region expansion via AWS APIs
+## ✨ Future Work
 
-⸻
+- Browser fingerprint rotation via Playwright Extra
+- SOCKS5 + Tor fallback
+- Custom AMI support
+- Dynamic region expansion via AWS APIs
+
+---
