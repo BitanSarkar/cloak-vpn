@@ -1,4 +1,5 @@
 import os, sys, subprocess, json, re
+from ping3 import ping, verbose_ping
 from datetime import datetime
 from constants import LOG_FILE, REGIONS_FILE, VPN_CONFIG_DIR
 
@@ -97,32 +98,28 @@ def extract_ip_from_ovpn(filepath):
                     return parts[1]  # IP or hostname
     return None
 
-def ping_ip(ip):
-    try:
-        result = subprocess.run(["ping", "-c", "10", "-W", "5", ip], capture_output=True, text=True)
-        log(f"[ping_ip] Ping returned for {ip} with exit code {result.returncode}")
-        log(f"[ping_ip] stdout: {result.stdout}")
-        if result.returncode == 0:
-            lines = result.stdout.splitlines()
-            # Try Linux-style first
-            time_line = next((l for l in lines if "time=" in l), None)
-            if time_line:
-                time_part = time_line.split("time=")[-1].split()[0]
-                return float(time_part)
-            # Fallback to macOS summary line
-            summary = next((l for l in lines if "round-trip" in l or "rtt" in l), None)
-            if summary:
-                values = summary.split("=")[-1].strip().split(" ")[0].split("/")
-                if len(values) >= 2:
-                    avg = float(values[1])
-                    return avg
-        else:
-            log(f"[ping_ip] Ping failed for {ip} with exit code {result.returncode}")
-            log(f"[ping_ip] stdout: {result.stdout}")
-            log(f"[ping_ip] stderr: {result.stderr}")
-    except Exception as e:
-        log(f"[ping_ip] Exception while pinging {ip}: {e}")
-    return None
+def ping_ip(ip, count=5, timeout=2, log_hook=None):
+    log(f"[ping_ip] Pinging {ip} with {count} packets using ping3...", log_hook)
+    latencies = []
+
+    for i in range(count):
+        try:
+            latency = ping(ip, timeout=timeout, unit='ms')
+            if latency is not None:
+                latencies.append(latency)
+                log(f"[ping_ip] Ping {i+1}/{count}: {latency:.2f} ms", log_hook)
+            else:
+                log(f"[ping_ip] Ping {i+1}/{count}: Timeout")
+        except Exception as e:
+            log(f"[ping_ip] Ping {i+1}/{count}: Error - {e}")
+
+    if latencies:
+        avg_latency = sum(latencies) / len(latencies)
+        log(f"[ping_ip] Average latency to {ip}: {avg_latency:.2f} ms")
+        return avg_latency
+    else:
+        log(f"[ping_ip] All pings to {ip} failed or timed out.")
+        return None
 
 def ping_ips_from_ovpn_files(log_hook=None):
     region_map = {}
@@ -141,7 +138,7 @@ def ping_ips_from_ovpn_files(log_hook=None):
         log(f"[ping_ips_from_ovpn_files] Extracted IP from {f}: {ip}", log_hook)
         if not ip:
             continue
-        latency = ping_ip(ip)
+        latency = ping_ip(ip, log_hook=log_hook)
         if latency is not None:
             region = f.split(".")[0]
             log(f"[ping_ips_from_ovpn_files] {f} latency: {latency} ms", log_hook)
