@@ -76,8 +76,8 @@ cloakvpn/
 ### 1. Clone the repo
 
 ```bash
-git clone https://github.com/yourname/cloakvpn.git
-cd cloakvpn
+git clone https://github.com/BitanSarkar/personal-ghost-vpn.git
+cd personal-ghost-vpn
 ```
 
 ### 2. Create and activate a virtual environment (recommended)
